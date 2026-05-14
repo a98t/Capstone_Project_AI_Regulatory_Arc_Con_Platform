@@ -5,7 +5,7 @@
 
 ## Overview
 
-DEREK-AI modernises the legacy [derek-info.kz](https://derek-info.kz) platform from keyword search over 27 000 documents into an AI-first compliance assistant. Given a building description it runs a multi-agent LangGraph pipeline that:
+DEREK-AI platform transforms keyword search over 27 000 documents into an AI-first compliance assistant. Given a building description it runs a multi-agent LangGraph pipeline that:
 
 1. **Searches** ~450 000 vector chunks (bge-m3 embeddings, Qdrant)  
 2. **Analyses** compliance against СНиП / СП / ҚНжЕ / СТ РК norms  
