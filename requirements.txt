@@ -1,0 +1,53 @@
+# Core LLM & Agent Framework
+langchain==0.3.25
+langchain-community==0.3.23
+langchain-openai==0.3.16
+langgraph==0.4.3
+langfuse==2.60.0
+
+# Local LLM (Ollama)
+ollama==0.4.8
+
+# Embeddings
+sentence-transformers==3.4.1
+torch==2.6.0
+
+# Vector Database
+qdrant-client==1.13.3
+
+# PDF Processing
+pymupdf==1.25.5
+
+# RAG Evaluation
+ragas==0.2.15
+
+# MCP / Search
+tavily-python==0.7.6
+mcp==1.9.0
+
+# Backend
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+pydantic==2.11.4
+pydantic-settings==2.9.1
+slowapi==0.1.9
+python-multipart==0.0.20
+sse-starlette==2.2.1
+aiofiles==24.1.0
+
+# Database (feedback & audit)
+aiosqlite==0.21.0
+
+# Caching
+diskcache==5.6.3
+
+# Security
+python-jose[cryptography]==3.3.0
+
+# Utilities
+python-dotenv==1.1.0
+structlog==25.3.0
+httpx==0.28.1
+tenacity==9.1.2
+tqdm==4.67.1
+rich==14.0.0
