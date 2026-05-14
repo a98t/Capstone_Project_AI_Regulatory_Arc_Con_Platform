@@ -2,6 +2,7 @@
 
 > Capstone Project · EPAM AI/ML Course 2026  
 > Kazakhstan Construction Norm Compliance Assistant
+> Anet Tatygulov
 
 ## Overview
 
@@ -25,8 +26,8 @@ DEREK-AI platform transforms keyword search over 27 000 documents into an AI-fir
 ### 1. Clone & configure
 
 ```bash
-git clone <repo>
-cd Capstone_Project
+git clone https://github.com/a98t/Capstone_Project_AI_Regulatory_Arc_Con_Platform
+cd Capstone_Project_AI_Regulatory_Arc_Con_Platform
 cp .env.example .env
 # Edit .env — set LANGFUSE keys if desired, TAVILY_API_KEY if available
 ```
@@ -46,7 +47,7 @@ pip install -r requirements.txt
 ### 4. Ingest regulatory documents
 
 ```bash
-# Place PDFs in data/regulations/
+# Place PDF, DOCX, or TXT files in data/regulations/
 python scripts/ingest.py --dir data/regulations
 
 # Check index status
@@ -56,10 +57,14 @@ python scripts/check_index.py
 ### 5. Start the backend
 
 ```bash
-uvicorn src.api.main:app --reload --port 8000
+# Windows (PowerShell)
+$env:PYTHONPATH = "."; uvicorn src.api.main:app --host 0.0.0.0 --port 8001 --reload
+
+# Linux / macOS
+PYTHONPATH=. uvicorn src.api.main:app --host 0.0.0.0 --port 8001 --reload
 ```
 
-API docs: http://localhost:8000/docs
+API docs: http://localhost:8001/docs
 
 ### 6. Start the frontend
 
@@ -79,7 +84,7 @@ UI: http://localhost:5173
 User Query
     │
     ▼
-FastAPI (port 8000)
+FastAPI (port 8001)
     │  Guardrail: input_filter.py
     │
     ▼

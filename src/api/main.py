@@ -13,6 +13,7 @@ from slowapi.errors import RateLimitExceeded
 from src.api.middleware import limiter, setup_middleware
 from src.api.routers import analyze, feedback, prompt, search
 from src.config import settings
+from src.qdrant_client_factory import create_qdrant_client
 
 log = structlog.get_logger(__name__)
 
@@ -52,10 +53,7 @@ def create_app() -> FastAPI:
         llm_ok = False
 
         try:
-            from qdrant_client import QdrantClient
-            client = QdrantClient(
-                host=settings.qdrant_host, port=settings.qdrant_port
-            )
+            client = create_qdrant_client()
             client.get_collections()
             qdrant_ok = True
         except Exception:

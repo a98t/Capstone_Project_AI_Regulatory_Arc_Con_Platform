@@ -1,9 +1,11 @@
 """
-PDF parser — extracts structured text from regulatory documents.
+Document parser — extracts structured text from regulatory documents.
 
 Supports:
 - Text-based PDFs (via PyMuPDF)
 - Scanned PDFs (OCR fallback via pytesseract, if installed)
+- Word documents .docx (via python-docx)
+- Plain text .txt files
 
 Returns a ParsedDocument with full text and extracted metadata.
 """
@@ -160,6 +162,71 @@ def parse_pdf(path: Path) -> Optional[ParsedDocument]:
         full_text=full_text,
         page_count=page_count,
         extraction_method=extraction_method,
+    )
+
+
+def parse_docx(path: Path) -> Optional["ParsedDocument"]:
+    """
+    Parse a Microsoft Word (.docx) regulatory document.
+    Extracts text from paragraphs and tables.
+    """
+    path = Path(path)
+    if not path.exists() or path.suffix.lower() != ".docx":
+        log.warning("invalid_docx_file", path=str(path))
+        return None
+
+    log.info("parsing_docx", path=str(path))
+    doc_hash = _compute_hash(path)
+
+    try:
+        from docx import Document as DocxDocument
+        doc = DocxDocument(str(path))
+    except Exception as exc:
+        log.warning("docx_open_failed", path=str(path), error=str(exc))
+        return None
+
+    parts: list[str] = []
+
+    # Extract paragraphs
+    for para in doc.paragraphs:
+        text = para.text.strip()
+        if text:
+            parts.append(text)
+
+    # Extract table cells (regulations often use tables for norm values)
+    for table in doc.tables:
+        for row in table.rows:
+            row_text = "  |  ".join(
+                cell.text.strip() for cell in row.cells if cell.text.strip()
+            )
+            if row_text:
+                parts.append(row_text)
+
+    full_text = "\n".join(parts)
+
+    if len(full_text.strip()) < 50:
+        log.warning("parse_failed", path=str(path), reason="Insufficient text in docx")
+        return None
+
+    header = full_text[:500]
+    stem = path.stem
+    title = stem.replace("_", " ")
+    doc_number = stem
+    doc_type = _detect_doc_type(header + stem)
+    year = _detect_year(header + stem)
+    language = _detect_language(full_text[:2000])
+
+    return ParsedDocument(
+        file_path=str(path),
+        doc_hash=doc_hash,
+        title=title,
+        doc_number=doc_number,
+        doc_type=doc_type,
+        year=year,
+        language=language,
+        full_text=full_text,
+        page_count=len(doc.paragraphs) // 30 + 1,  # rough estimate
+        extraction_method="docx",
     )
 
 

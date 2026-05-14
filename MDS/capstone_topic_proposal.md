@@ -8,7 +8,7 @@
 
 **Development of an AI-Powered Regulatory Intelligence System for the Construction Industry Using RAG and Multi-Agent Architecture**
 
-**Student:** 
+**Student:** Anet Tatygulov
 **Submission Date:** April 29, 2026  
 **Category:** Scenario of Your Choice (Custom Proposal)
 
@@ -61,8 +61,8 @@ An **Orchestrator** coordinates all four agents, routes tasks, manages shared st
 ### ✅ RAG Pipeline
 
 - **Knowledge Base:** Kazakhstan construction regulatory documents — СНиП (Construction Norms and Rules), СП (Sets of Rules), ҚНжЕ (Kazakh national norms) — loaded as PDFs
-- **Processing:** PyMuPDF for parsing → LangChain RecursiveCharacterTextSplitter → `sentence-transformers` for local embedding generation
-- **Storage:** ChromaDB (local vector database, zero cloud cost)
+- **Processing:** PyMuPDF / python-docx for parsing → article-aware chunker → `sentence-transformers` for local embedding generation
+- **Storage:** Qdrant (local vector database via Docker, zero cloud cost)
 - **Retrieval:** Cosine similarity search returning top-k chunks with metadata (document name, article number, effective date)
 - **Quality Gate:** Chunks with similarity score below 0.60 trigger a "low confidence" flag instead of being silently passed to agents
 

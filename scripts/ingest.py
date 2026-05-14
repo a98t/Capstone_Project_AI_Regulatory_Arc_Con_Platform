@@ -22,7 +22,7 @@ import structlog
 
 from src.ingestion.chunker import chunk_document
 from src.ingestion.indexer import ensure_collection, get_indexed_hashes, index_chunks
-from src.ingestion.parser import parse_pdf, parse_text_file
+from src.ingestion.parser import parse_docx, parse_pdf, parse_text_file
 
 log = structlog.get_logger(__name__)
 
@@ -30,8 +30,16 @@ log = structlog.get_logger(__name__)
 def ingest_directory(doc_dir: Path, batch_size: int = 32, dry_run: bool = False) -> None:
     pdf_files = list(doc_dir.rglob("*.pdf"))
     txt_files = list(doc_dir.rglob("*.txt"))
-    all_files = pdf_files + txt_files
-    log.info("ingestion_start", total_files=len(all_files), pdfs=len(pdf_files), txt=len(txt_files), dry_run=dry_run)
+    docx_files = list(doc_dir.rglob("*.docx"))
+    all_files = pdf_files + txt_files + docx_files
+    log.info(
+        "ingestion_start",
+        total_files=len(all_files),
+        pdfs=len(pdf_files),
+        txt=len(txt_files),
+        docx=len(docx_files),
+        dry_run=dry_run,
+    )
 
     if not all_files:
         print(f"No PDF or TXT files found in {doc_dir}")
@@ -52,8 +60,11 @@ def ingest_directory(doc_dir: Path, batch_size: int = 32, dry_run: bool = False)
 
     for i, file_path in enumerate(all_files, 1):
         try:
-            if file_path.suffix.lower() == ".pdf":
+            suffix = file_path.suffix.lower()
+            if suffix == ".pdf":
                 doc = parse_pdf(file_path)
+            elif suffix == ".docx":
+                doc = parse_docx(file_path)
             else:
                 doc = parse_text_file(file_path)
 

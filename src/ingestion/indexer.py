@@ -23,6 +23,7 @@ from qdrant_client.http.models import (
 from src.config import settings
 from src.ingestion.chunker import DocumentChunk
 from src.ingestion.embedder import embed_chunks
+from src.qdrant_client_factory import create_qdrant_client
 
 log = structlog.get_logger(__name__)
 
@@ -31,7 +32,7 @@ BATCH_SIZE = 64
 
 
 def _get_client() -> QdrantClient:
-    return QdrantClient(host=settings.qdrant_host, port=settings.qdrant_port)
+    return create_qdrant_client()
 
 
 def ensure_collection(client: QdrantClient) -> None:

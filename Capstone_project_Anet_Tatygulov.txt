@@ -1,0 +1,32 @@
+Capstone Project Submission
+===========================
+
+Student: Anet Tatygulov
+Email: anet_tatygulov@epam.com
+Submission Date: May 2026
+
+Project Title:
+  Development of an AI-Powered Regulatory Intelligence System
+  for the Construction Industry Using RAG and Multi-Agent Architecture
+
+GitHub Repository:
+  https://github.com/a98t/Capstone_Project_AI_Regulatory_Arc_Con_Platform
+
+Video Demo:
+  [TO BE ADDED — record and upload to YouTube/Google Drive, then paste link here]
+
+Executive Summary:
+  docs/EXECUTIVE_SUMMARY.md (in repository)
+
+Architecture Blueprint:
+  MDS/DECISIONS.md  — 7 Architecture Decision Records
+  MDS/PRD.md        — Full Product Requirements Document
+
+Key Deliverables:
+  - Multi-agent LangGraph pipeline (4 agents: Search, Compliance, Update, Explanation)
+  - RAG over Kazakhstan construction regulations (Qdrant + BAAI/bge-m3)
+  - MCP integration via Tavily Search API (norm freshness verification)
+  - React 18 + FastAPI full-stack application
+  - 33 automated tests (positive, negative, adversarial)
+  - Input guardrails (injection detection)
+  - User feedback system
