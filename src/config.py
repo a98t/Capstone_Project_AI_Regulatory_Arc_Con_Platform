@@ -36,7 +36,7 @@ class Settings(BaseSettings):
 
     # RAG
     rag_top_k: int = 8
-    rag_confidence_threshold: float = 0.60
+    rag_confidence_threshold: float = 0.40
     rag_max_chunk_size: int = 800
     rag_chunk_overlap: int = 100
 

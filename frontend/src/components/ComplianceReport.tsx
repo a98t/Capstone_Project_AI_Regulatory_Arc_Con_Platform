@@ -1,5 +1,7 @@
 import type { AnalyzeResponse } from '../types'
 import FindingCard from './FindingCard'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 const RISK_STYLES: Record<string, string> = {
   HIGH: 'bg-red-600',
@@ -42,8 +44,8 @@ export default function ComplianceReport({ report }: { report: AnalyzeResponse }
 
         {/* Plain-language narrative */}
         {narrative && (
-          <div className="mt-4 rounded-xl bg-slate-50 border border-slate-100 p-4 text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">
-            {narrative}
+          <div className="mt-4 rounded-xl bg-slate-50 border border-slate-100 p-4 text-sm text-slate-700 leading-relaxed [&_strong]:font-semibold [&_ul]:list-disc [&_ul]:ml-5 [&_ol]:list-decimal [&_ol]:ml-5 [&_li]:mt-1 [&_p]:mt-2 first:[&_p]:mt-0">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{narrative}</ReactMarkdown>
           </div>
         )}
       </div>
