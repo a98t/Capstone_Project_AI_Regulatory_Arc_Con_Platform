@@ -18,7 +18,7 @@ export default function AnalysisForm() {
     notes: '',
   })
 
-  const { setResult, setIsAnalyzing, setError, resetProgress } = useAppStore()
+  const { setResult, setIsAnalyzing, setError, resetProgress, addAgentStep } = useAppStore()
 
   const mutation = useMutation({
     mutationFn: runAnalysis,
@@ -28,6 +28,7 @@ export default function AnalysisForm() {
       setError(null)
     },
     onSuccess: (data) => {
+      data.agent_trace?.forEach((step) => addAgentStep(step))
       setResult(data)
       setIsAnalyzing(false)
     },

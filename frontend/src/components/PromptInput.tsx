@@ -12,7 +12,7 @@ const EXAMPLE_PROMPTS = [
 export default function PromptInput() {
   const [prompt, setPrompt] = useState('')
   const [showExamples, setShowExamples] = useState(false)
-  const { setResult, setIsAnalyzing, setError, resetProgress } = useAppStore()
+  const { setResult, setIsAnalyzing, setError, resetProgress, addAgentStep } = useAppStore()
 
   const mutation = useMutation({
     mutationFn: runPromptAnalysis,
@@ -22,6 +22,7 @@ export default function PromptInput() {
       setError(null)
     },
     onSuccess: (data) => {
+      data.agent_trace?.forEach((step) => addAgentStep(step))
       setResult(data)
       setIsAnalyzing(false)
     },
