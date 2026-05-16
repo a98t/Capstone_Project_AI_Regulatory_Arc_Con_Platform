@@ -17,6 +17,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.config import settings
 from src.ingestion.indexer import get_indexed_hashes
+from src.qdrant_client_factory import create_qdrant_client
 
 
 def main() -> None:
@@ -25,20 +26,21 @@ def main() -> None:
     args = parser.parse_args()
 
     try:
-        from qdrant_client import QdrantClient
-
-        client = QdrantClient(host=settings.qdrant_host, port=settings.qdrant_port)
+        client = create_qdrant_client()
         info = client.get_collection(settings.qdrant_collection)
+
+        # vectors_count was removed in newer Qdrant server versions — use points_count
+        vectors = getattr(info, "vectors_count", None) or getattr(info, "points_count", 0)
 
         print(f"\n{'='*50}")
         print(f"Collection: {settings.qdrant_collection}")
-        print(f"Vectors:    {info.vectors_count:,}")
+        print(f"Vectors:    {vectors:,}")
         print(f"Points:     {info.points_count:,}")
         print(f"Status:     {info.status}")
         print(f"{'='*50}\n")
 
         # Indexed document hashes
-        hashes = get_indexed_hashes()
+        hashes = get_indexed_hashes(client)
         print(f"Unique documents indexed: {len(hashes)}")
 
         # Sample points

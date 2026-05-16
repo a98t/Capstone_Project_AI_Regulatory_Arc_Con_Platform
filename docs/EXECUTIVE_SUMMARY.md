@@ -3,8 +3,8 @@
 ## DEREK-AI: AI-Powered Regulatory Intelligence System for Kazakhstan's Construction Industry
 
 **Student:** Anet Tatygulov  
-**Course:** EPAM AI/ML Engineering Course 2026  
-**Submission Date:** May 2026  
+**Course:** EPAM Generative AI for Software Development  
+**Submission Date:** 18 May 2026  
 **Repository:** https://github.com/a98t/Capstone_Project_AI_Regulatory_Arc_Con_Platform
 
 ---
