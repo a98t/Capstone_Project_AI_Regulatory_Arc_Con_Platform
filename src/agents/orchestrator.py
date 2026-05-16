@@ -121,17 +121,19 @@ def run_pipeline(initial_state: AgentState) -> AgentState:
 
 async def stream_pipeline(initial_state: AgentState) -> AsyncGenerator[dict, None]:
     """
-    Stream agent progress events as they complete.
+    Stream agent progress events as they complete, then yield the full final state.
 
     Yields dicts with structure:
-      {"event": "agent_update", "agent": str, "status": str, "message": str}
-      {"event": "complete", "session_id": str}
+      {"event": "agent_update", "step": AgentStep dict}
+      {"event": "complete", "final_state": dict}
       {"event": "error", "message": str}
 
     Used by the FastAPI SSE endpoint to push real-time updates to the frontend.
     """
     log.info("pipeline_stream_start", session_id=initial_state["session_id"])
     seen_agents: set[str] = set()
+    merged_state: dict = dict(initial_state)
+    start = time.monotonic()
 
     try:
         async for event in _graph.astream(initial_state):
@@ -140,20 +142,20 @@ async def stream_pipeline(initial_state: AgentState) -> AsyncGenerator[dict, Non
                 if node_name in ("__start__", "__end__"):
                     continue
 
+                # Merge partial node output into running state
+                merged_state.update(node_output)
+
                 trace = node_output.get("agent_trace", [])
                 for step in trace:
                     agent_name = step.get("agent", node_name)
                     if agent_name not in seen_agents:
                         seen_agents.add(agent_name)
-                        yield {
-                            "event": "agent_update",
-                            "agent": agent_name,
-                            "status": step.get("status", "done"),
-                            "message": step.get("message", ""),
-                            "duration_ms": step.get("duration_ms", 0),
-                        }
+                        yield {"event": "agent_update", "step": dict(step)}
 
-        yield {"event": "complete", "session_id": initial_state["session_id"]}
+        merged_state["total_duration_ms"] = int((time.monotonic() - start) * 1000)
+        log.info("pipeline_stream_complete", session_id=initial_state["session_id"],
+                 duration_ms=merged_state["total_duration_ms"])
+        yield {"event": "complete", "final_state": merged_state}
 
     except Exception as exc:
         log.exception("pipeline_stream_error", error=str(exc))

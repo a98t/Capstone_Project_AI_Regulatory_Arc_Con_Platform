@@ -24,7 +24,7 @@ export default function ComplianceReport({ report }: { report: AnalyzeResponse }
             {summary.overall_risk} RISK
           </span>
           <span className="text-xs text-slate-400">
-            {total_duration_ms}ms · confidence {Math.round(search_confidence * 100)}%
+            {(total_duration_ms / 1000).toFixed(1)}s · confidence {Math.round(search_confidence * 100)}%
           </span>
         </div>
 

@@ -17,7 +17,7 @@ export default function App() {
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <header className="bg-blue-800 text-white py-4 px-6 shadow-md">
-        <div className="max-w-5xl mx-auto flex items-center gap-3">
+        <div className="max-w-7xl mx-auto flex items-center gap-3">
           <span className="text-2xl">🏗️</span>
           <div>
             <h1 className="text-xl font-bold tracking-tight">DEREK-AI</h1>
@@ -28,7 +28,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-8 space-y-6">
+      <main className="max-w-7xl mx-auto px-4 py-8 space-y-6">
         {/* Mode tabs */}
         <div className="flex gap-1 bg-white rounded-xl border border-slate-200 p-1 w-fit shadow-sm">
           <button
@@ -53,9 +53,9 @@ export default function App() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Left column: input + search */}
-          <div className="lg:col-span-1 space-y-5">
+          <div className="lg:col-span-2 space-y-5">
             {mode === 'prompt' ? (
               <PromptInput />
             ) : (
@@ -66,7 +66,7 @@ export default function App() {
           </div>
 
           {/* Right column: results */}
-          <div className="lg:col-span-2 space-y-5">
+          <div className="lg:col-span-3 space-y-5">
             {error && (
               <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800">
                 ⚠️ {error}

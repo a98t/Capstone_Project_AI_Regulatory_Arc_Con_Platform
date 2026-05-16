@@ -1,6 +1,5 @@
-import { useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
-import { runAnalysis } from '../api/client'
+import { useRef, useState } from 'react'
+import { streamAnalysis } from '../api/client'
 import { useAppStore } from '../store/appStore'
 import type { AnalyzeRequest } from '../types'
 
@@ -19,26 +18,33 @@ export default function AnalysisForm() {
   })
 
   const { setResult, setIsAnalyzing, setError, resetProgress, addAgentStep } = useAppStore()
-
-  const mutation = useMutation({
-    mutationFn: runAnalysis,
-    onMutate: () => {
-      resetProgress()
-      setIsAnalyzing(true)
-      setError(null)
-    },
-    onSuccess: (data) => {
-      data.agent_trace?.forEach((step) => addAgentStep(step))
-      setResult(data)
-      setIsAnalyzing(false)
-    },
-    onError: (err: any) => {
-      setError(err?.response?.data?.detail || 'Analysis failed. Please try again.')
-      setIsAnalyzing(false)
-    },
-  })
+  const [isPending, setIsPending] = useState(false)
+  const abortRef = useRef<AbortController | null>(null)
 
   const isValid = form.building_type && form.city && form.floors > 0
+
+  const handleRun = () => {
+    if (!isValid) return
+    abortRef.current?.abort()
+    resetProgress()
+    setIsAnalyzing(true)
+    setError(null)
+    setIsPending(true)
+
+    streamAnalysis(form, {
+      onAgentStep: (step) => addAgentStep(step),
+      onComplete: (data) => {
+        setResult(data)
+        setIsAnalyzing(false)
+        setIsPending(false)
+      },
+      onError: (msg) => {
+        setError(msg || 'Analysis failed. Please try again.')
+        setIsAnalyzing(false)
+        setIsPending(false)
+      },
+    })
+  }
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
@@ -122,11 +128,11 @@ export default function AnalysisForm() {
       </div>
 
       <button
-        disabled={!isValid || mutation.isPending}
-        onClick={() => mutation.mutate(form)}
+        disabled={!isValid || isPending}
+        onClick={handleRun}
         className="mt-5 w-full bg-blue-700 hover:bg-blue-800 disabled:opacity-40 text-white font-semibold py-2.5 rounded-xl transition-colors text-sm"
       >
-        {mutation.isPending ? 'Analyzing…' : 'Run Compliance Analysis'}
+        {isPending ? 'Analyzing…' : 'Run Compliance Analysis'}
       </button>
     </div>
   )

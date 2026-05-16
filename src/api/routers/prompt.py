@@ -13,14 +13,16 @@ from __future__ import annotations
 import json
 import re
 import time
+from typing import AsyncGenerator
 
 import structlog
 from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import StreamingResponse
 from langchain_core.messages import HumanMessage, SystemMessage
 from pydantic import BaseModel, Field
 
 from src.agents.llm import get_llm
-from src.agents.orchestrator import build_initial_state, run_pipeline
+from src.agents.orchestrator import build_initial_state, run_pipeline, stream_pipeline
 from src.api.middleware import limiter
 from src.api.models import AnalyzeResponse
 from src.api.routers.analyze import _build_response
@@ -150,3 +152,54 @@ async def prompt_analysis(request: Request, body: PromptRequest) -> AnalyzeRespo
     log.info("prompt_complete", duration_ms=duration_ms)
 
     return _build_response(final_state)
+
+
+# ---------------------------------------------------------------------------
+# Streaming endpoint (SSE) — real-time agent progress
+# ---------------------------------------------------------------------------
+
+async def _prompt_sse_generator(body: PromptRequest) -> AsyncGenerator[str, None]:
+    """Extract params, then stream agent events + final result via SSE."""
+    # Step 1: param extraction (runs before streaming starts)
+    params = _extract_params(body.prompt)
+
+    state = build_initial_state(
+        building_type=params.building_type,
+        floors=params.floors,
+        city=params.city,
+        material=params.material,
+        purpose=params.purpose,
+        notes=params.notes,
+    )
+
+    try:
+        async for msg in stream_pipeline(state):
+            if msg["event"] == "agent_update":
+                data = json.dumps({"event": "agent_update", "step": msg["step"]})
+                yield f"data: {data}\n\n"
+            elif msg["event"] == "complete":
+                response = _build_response(msg["final_state"])
+                data = json.dumps({"event": "complete", "result": response.model_dump()})
+                yield f"data: {data}\n\n"
+            elif msg["event"] == "error":
+                data = json.dumps({"event": "error", "message": msg["message"]})
+                yield f"data: {data}\n\n"
+    except Exception as exc:
+        data = json.dumps({"event": "error", "message": str(exc)})
+        yield f"data: {data}\n\n"
+
+
+@router.post("/prompt/stream", summary="Free-text compliance query (SSE streaming)")
+@limiter.limit("10/minute")
+async def prompt_stream(request: Request, body: PromptRequest) -> StreamingResponse:
+    """
+    SSE streaming version of /api/prompt.
+    Emits agent_update events as each agent completes, then a complete event
+    with the full AnalyzeResponse payload.
+    """
+    log.info("prompt_stream_request", prompt_length=len(body.prompt))
+    return StreamingResponse(
+        content=_prompt_sse_generator(body),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )

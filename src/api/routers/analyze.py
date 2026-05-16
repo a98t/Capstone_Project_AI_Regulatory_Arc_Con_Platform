@@ -123,10 +123,56 @@ async def analyze(request: Request, body: AnalyzeRequest) -> AnalyzeResponse:
 
 
 async def _sse_generator(initial_state: dict) -> AsyncGenerator[str, None]:
-    """Format agent events as SSE messages."""
-    async for event in stream_pipeline(initial_state):
-        data = json.dumps(event)
+    """Stream agent events then the final result via SSE."""
+    try:
+        async for msg in stream_pipeline(initial_state):
+            if msg["event"] == "agent_update":
+                data = json.dumps({"event": "agent_update", "step": msg["step"]})
+                yield f"data: {data}\n\n"
+            elif msg["event"] == "complete":
+                response = _build_response(msg["final_state"])
+                data = json.dumps({"event": "complete", "result": response.model_dump()})
+                yield f"data: {data}\n\n"
+            elif msg["event"] == "error":
+                data = json.dumps({"event": "error", "message": msg["message"]})
+                yield f"data: {data}\n\n"
+    except Exception as exc:
+        data = json.dumps({"event": "error", "message": str(exc)})
         yield f"data: {data}\n\n"
+
+
+@router.post("/analyze/stream", summary="Structured compliance analysis (SSE streaming)")
+@limiter.limit("20/minute")
+async def analyze_stream(request: Request, body: AnalyzeRequest) -> StreamingResponse:
+    """
+    SSE streaming version of /api/analyze.
+    Emits agent_update events as each agent completes, then a complete event
+    with the full AnalyzeResponse payload.
+    """
+    filter_result = validate_input(
+        building_type=body.building_type,
+        floors=body.floors,
+        city=body.city,
+        material=body.material,
+        purpose=body.purpose,
+        notes=body.notes,
+    )
+    if not filter_result.is_valid:
+        raise HTTPException(status_code=422, detail=filter_result.reason)
+
+    initial_state = build_initial_state(
+        building_type=body.building_type,
+        floors=body.floors,
+        city=body.city,
+        material=body.material,
+        purpose=body.purpose,
+        notes=body.notes,
+    )
+    return StreamingResponse(
+        content=_sse_generator(initial_state),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 @router.get("/stream/{session_id}")
