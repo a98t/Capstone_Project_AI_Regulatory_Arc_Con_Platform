@@ -122,7 +122,7 @@ export default function PromptInput() {
       </form>
 
       <p className="mt-3 text-xs text-slate-400 leading-relaxed">
-        AI extracts your parameters, searches Kazakhstan's regulatory database (СНиП, СП РК, ҚНжЕ),
+        AI extracts your parameters, searches Kazakhstan's regulatory database (СП РК, СН РК),
         and returns a plain-language compliance report with document references.
       </p>
     </div>
