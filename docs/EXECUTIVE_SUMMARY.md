@@ -54,7 +54,7 @@ User: "9-floor residential building, Almaty, reinforced concrete"
               └──────────────────┘
 ```
 
-**Key technology decisions with rationale are documented in [`MDS/DECISIONS.md`](../MDS/DECISIONS.md) (7 Architecture Decision Records).**
+**Key technology decisions with rationale are documented in [`MDS/BLUEPRINT.md`](../MDS/BLUEPRINT.md) (7 Architecture Decision Records).**
 
 ---
 

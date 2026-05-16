@@ -408,7 +408,7 @@ derek-regulatory-ai/
 ├── .env.example                 # Template — no real credentials
 ├── .gitignore
 ├── README.md
-├── DECISIONS.md                 # Architecture trade-offs
+├── BLUEPRINT.md                 # Architecture blueprint + trade-offs
 │
 ├── data/
 │   └── regulations/             # Source PDFs (not committed to git)
@@ -614,7 +614,7 @@ derek-regulatory-ai/
 | **Day 10** | React frontend — core | Vite scaffold, AnalysisForm, AgentStatusPanel (SSE), ComplianceReport components | 6h |
 | **Day 11** | React frontend — polish | FindingCard, FreshnessBadge, FeedbackWidget, SearchPanel; TailwindCSS styling; responsive layout | 5h |
 | **Day 12** | Full integration + bug fixes | Frontend ↔ Backend integration; end-to-end manual testing; bug fixes; complete test suite | 5h |
-| **Day 13** | Documentation + RAGAS eval | README, DECISIONS.md, `.env.example`; RAGAS eval run; executive summary draft | 4h |
+| **Day 13** | Documentation + RAGAS eval | README, BLUEPRINT.md, `.env.example`; RAGAS eval run; executive summary draft | 4h |
 | **Day 14** | Demo recording + final polish | Demo script rehearsal; screen recording; 2–5 min demo video; final README review | 4h |
 
 **Week 2 Exit Criteria:** Full system running locally; 8+ automated tests passing; demo video recorded; all deliverables complete.
@@ -638,7 +638,7 @@ A feature is complete when:
 |---|---|---|---|
 | 1 | Architecture Blueprint | System diagram + tech stack table + data flow | Day 1 |
 | 2 | Working Application | All 4 agents functional; demo-ready | Day 12 |
-| 3 | Code Repository | GitHub repo; clean structure; README; DECISIONS.md | Day 13 |
+| 3 | Code Repository | GitHub repo; clean structure; README; BLUEPRINT.md | Day 13 |
 | 4 | Test Suite | ≥ 8 test cases covering positive, negative, adversarial | Day 12 |
 | 5 | Video Demo | 2–5 min; input → agents → report → test → code commentary | Day 14 |
 | 6 | Executive Summary | 1–2 page PDF; problem, architecture, business value | Day 13 |
@@ -655,7 +655,7 @@ A feature is complete when:
 | Video Demo | Base | Recorded Day 14 using prepared demo script |
 | **UX & Presentation** | **+10** | React + shadcn/ui; animated agent status panel; professional compliance report layout |
 | **Data Quality** | **+10** | RAGAS evaluation output; curated 200-doc demo corpus with metadata validation; ingestion statistics |
-| **Code Excellence** | **+10** | LangGraph state machine; Pydantic v2 models; proper separation of concerns; DECISIONS.md with trade-off justification |
+| **Code Excellence** | **+10** | LangGraph state machine; Pydantic v2 models; proper separation of concerns; BLUEPRINT.md with trade-off justification |
 
 ---
 

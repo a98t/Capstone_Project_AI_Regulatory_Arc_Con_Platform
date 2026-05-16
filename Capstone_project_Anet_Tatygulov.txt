@@ -7,7 +7,7 @@ Submission Date: May 2026
 
 Project Title:
   Development of an AI-Powered Regulatory Intelligence System
-  for the Construction Industry Using RAG and Multi-Agent Architecture
+  for the Design & Construction Industry Using RAG and Multi-Agent Architecture
 
 GitHub Repository:
   https://github.com/a98t/Capstone_Project_AI_Regulatory_Arc_Con_Platform
@@ -19,7 +19,7 @@ Executive Summary:
   docs/EXECUTIVE_SUMMARY.md (in repository)
 
 Architecture Blueprint:
-  MDS/DECISIONS.md  — 7 Architecture Decision Records
+  MDS/BLUEPRINT.md  — Architecture Blueprint (7 ADRs + full system design)
   MDS/PRD.md        — Full Product Requirements Document
 
 Key Deliverables:

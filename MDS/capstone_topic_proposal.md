@@ -171,7 +171,7 @@ Demo script:
 ```
 derek-regulatory-ai/
 ├── README.md                    # Setup instructions, env variables guide
-├── DECISIONS.md                 # Architecture trade-offs and rationale
+├── BLUEPRINT.md                 # Architecture blueprint + trade-offs and rationale
 ├── requirements.txt
 ├── .env.example                 # Template — no credentials committed
 ├── data/
@@ -213,7 +213,7 @@ derek-regulatory-ai/
 | **Video Demo (2–5 min)** | Live walkthrough: input → agent processing → compliance report → test execution (positive & adversarial) → 60-second code commentary |
 | **Code Repository** | Well-structured GitHub repo with README, `.env.example`, inline comments, and clear folder organization |
 | **Test Suite** | `pytest` covering 8 defined test cases with LLM behavior assertions |
-| **Self-Review** | Inline code comments + `DECISIONS.md` addressing: why LangGraph, why ChromaDB, why local embeddings, trade-offs made |
+| **Self-Review** | Inline code comments + `BLUEPRINT.md` addressing: why LangGraph, why Qdrant, why BAAI/bge-m3, trade-offs made |
 | **Executive Summary** | 1–2 page document covering: problem statement, architecture highlights, business value, lessons learned |
 
 ---

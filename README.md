@@ -18,10 +18,11 @@ DEREK-AI platform transforms keyword search over 27 000 documents into an AI-fir
 ## Quick Start
 
 ### Prerequisites
-- Python 3.11+
+- Python 3.12+
 - Docker + Docker Compose
 - Node.js 18+ (for frontend)
-- Ollama installed locally (`ollama pull mistral:7b-instruct`)
+- OpenAI API key (`LLM_PROVIDER=openai` — default)
+- Optional: Tavily API key for MCP norm freshness verification
 
 ### 1. Clone & configure
 
