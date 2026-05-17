@@ -8,7 +8,7 @@
 
 DEREK-AI platform transforms keyword search over 27 000 documents into an AI-first compliance assistant. Given a building description it runs a multi-agent LangGraph pipeline that:
 
-1. **Searches** ~450 000 vector chunks (bge-m3 embeddings, Qdrant)  
+1. **Searches** 1,004 indexed chunks from 13 Kazakhstan regulatory PDFs (bge-m3 embeddings, Qdrant; designed to scale to the full ~450,000-document corpus)  
 2. **Analyses** compliance against СНиП / СП / ҚНжЕ / СТ РК norms  
 3. **Verifies** norm freshness via Tavily MCP tool  
 4. **Explains** findings in plain professional Russian/English  

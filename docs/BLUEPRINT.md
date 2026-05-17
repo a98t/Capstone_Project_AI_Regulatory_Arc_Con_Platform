@@ -394,16 +394,16 @@ Capstone_Project/
 │   ├── ingest.py                  # CLI: python scripts/ingest.py --dir data/regulations
 │   └── check_index.py             # CLI: check Qdrant collection stats
 ├── tests/
-│   ├── test_guardrails.py         # 12 guardrail tests (injection, off-topic, valid)
-│   ├── test_retriever.py          # Retriever integration tests
-│   ├── test_api.py                # FastAPI endpoint tests
-│   └── test_pipeline.py           # Full pipeline smoke tests
+│   ├── test_positive.py           # Happy-path tests (valid building inputs)
+│   ├── test_negative.py           # Edge cases, invalid inputs, empty queries
+│   ├── test_adversarial.py        # 10 injection patterns × 2 fields — all blocked
+│   └── test_ragas_eval.py         # RAG quality evaluation (context_precision, faithfulness)
 ├── MDS/
-│   ├── BLUEPRINT.md               # This file — architecture + all ADRs
-│   ├── PRD.md                     # Full Product Requirements Document (~650 lines)
-│   └── capstone_topic_proposal.md # Original approved topic proposal
+│   └── PRD.md                     # Full Product Requirements Document (~650 lines)
 ├── docs/
-│   └── EXECUTIVE_SUMMARY.md       # 1-page executive summary deliverable
+│   ├── BLUEPRINT.md               # This file — architecture + all ADRs
+│   ├── EXECUTIVE_SUMMARY.md       # 1-page executive summary deliverable
+│   └── SELF_REVIEW.md             # Architecture decisions, trade-offs, lessons learned
 ├── data/
 │   ├── regulations/               # 13 real Kazakhstan PDFs (gitignored)
 │   └── qdrant_storage/            # Qdrant persistent volume (gitignored)
@@ -536,10 +536,10 @@ Capstone_Project/
 
 | Test file | Coverage |
 |---|---|
-| `test_guardrails.py` | Valid queries, injection patterns, off-topic rejection, edge cases |
-| `test_retriever.py` | Semantic search correctness, low-confidence handling, filter logic |
-| `test_api.py` | All FastAPI endpoints, 400/429 error responses |
-| `test_pipeline.py` | Full pipeline smoke test, graceful degradation without MCP |
+| `test_positive.py` | Valid building inputs — pipeline completes, report generated, correct structure |
+| `test_negative.py` | Invalid inputs, empty queries, out-of-scope cities — correct rejection |
+| `test_adversarial.py` | 10 injection patterns × 2 fields — all blocked with 422, no LLM call made |
+| `test_ragas_eval.py` | RAG quality evaluation — context_precision, context_recall, answer_faithfulness |
 
 **Test categories:**
 - **Positive:** Valid building descriptions → pipeline completes, report generated
