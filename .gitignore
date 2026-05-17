@@ -43,3 +43,6 @@ logs/
 
 # Capstone screening instructions (must not be committed)
 Capstone_project_screening*.md
+
+# Personal video script (local only)
+video_script.md
