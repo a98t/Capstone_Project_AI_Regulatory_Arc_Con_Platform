@@ -86,8 +86,7 @@ def _call_tavily(query: str) -> list:
     response = client.search(
         query=query,
         search_depth="basic",
-        max_results=3,
-        include_domains=["online.zakon.kz", "adilet.zan.kz", "egov.kz", "kazntu.kz"],
+        max_results=5,
     )
     return response.get("results", [])
 
@@ -106,7 +105,7 @@ def check_norm_freshness(norm_identifier: str) -> FreshnessVerdict:
         return cached
 
     query = (
-        f"{norm_identifier} изменение поправка Казахстан 2024 2025 строительные нормы"
+        f"{norm_identifier} актуализация изменение поправка Казахстан строительные нормы"
     )
 
     try:
