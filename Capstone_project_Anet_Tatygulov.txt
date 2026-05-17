@@ -18,6 +18,9 @@ Video Demo:
 Executive Summary:
   docs/EXECUTIVE_SUMMARY.md (in repository)
 
+Self-Review:
+  docs/SELF_REVIEW.md (in repository)
+
 Architecture Blueprint:
   MDS/BLUEPRINT.md  — Architecture Blueprint (7 ADRs + full system design)
   MDS/PRD.md        — Full Product Requirements Document
