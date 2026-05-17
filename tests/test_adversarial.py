@@ -57,11 +57,17 @@ class TestPromptInjection:
             },
         )
         # Either blocked by field length or by guardrail
-        assert response.status_code in (422, 422)
+        assert response.status_code == 422
 
 
 class TestOffTopicInputs:
     """Ensure off-topic requests are rejected."""
+
+    @pytest.fixture
+    def client(self):
+        from fastapi.testclient import TestClient
+        from src.api.main import app
+        return TestClient(app)
 
     OFF_TOPIC_INPUTS = [
         ("Pizza restaurant", 1, "Almaty", "wood", "food service"),

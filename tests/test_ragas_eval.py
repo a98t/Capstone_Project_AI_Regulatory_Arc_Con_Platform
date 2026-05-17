@@ -7,9 +7,9 @@ Run this separately from the CI test suite:
     pytest tests/test_ragas_eval.py -v --timeout=120 -s
 
 Expected passing thresholds:
-  - context_precision   >= 0.60
-  - context_recall      >= 0.55
-  - answer_faithfulness >= 0.70
+  - context_precision   >= 0.50
+  - context_recall      >= 0.50
+  - answer_faithfulness >= 0.60
 """
 
 from __future__ import annotations
@@ -94,6 +94,7 @@ def test_ragas_metrics_within_thresholds(eval_dataset):
     for k, v in metrics.items():
         print(f"  {k}: {v:.3f}")
 
-    # Thresholds — calibrated for student demo with 200-doc corpus
+    # Thresholds — calibrated for student demo with 13-doc corpus
     assert metrics.get("context_precision", 0) >= 0.50, "context_precision too low"
+    assert metrics.get("context_recall", 0) >= 0.50, "context_recall too low"
     assert metrics.get("answer_faithfulness", 0) >= 0.60, "answer_faithfulness too low"

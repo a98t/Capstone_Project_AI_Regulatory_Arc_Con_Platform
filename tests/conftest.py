@@ -4,6 +4,11 @@ pytest fixtures and shared test utilities.
 
 from __future__ import annotations
 
+import os
+
+# Disable slowapi rate limiting in tests so many requests don't hit 20/min cap
+os.environ.setdefault("RATELIMIT_ENABLED", "0")
+
 from typing import Any, Dict
 from unittest.mock import MagicMock, patch
 
