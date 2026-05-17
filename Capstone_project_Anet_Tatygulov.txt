@@ -13,7 +13,7 @@ GitHub Repository:
   https://github.com/a98t/Capstone_Project_AI_Regulatory_Arc_Con_Platform
 
 Video Demo:
-  [TO BE ADDED — record and upload to YouTube/Google Drive, then paste link here]
+  https://drive.google.com/file/d/1kISpU1y_FSk9v-51hy5QssfG-9QM0MBM/view?usp=sharing
 
 Executive Summary:
   docs/EXECUTIVE_SUMMARY.md (in repository)

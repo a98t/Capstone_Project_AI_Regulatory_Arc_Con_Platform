@@ -59,9 +59,9 @@ def run_ragas_evaluation(
     Used in test_ragas_eval.py — requires RAGAS installed.
     """
     try:
-        from datasets import Dataset
-        from ragas import evaluate
-        from ragas.metrics import (
+        from datasets import Dataset  # type: ignore[import-untyped]
+        from ragas import evaluate  # type: ignore[import-untyped]
+        from ragas.metrics import (  # type: ignore[import-untyped]
             answer_faithfulness,
             context_recall,
             context_precision,
