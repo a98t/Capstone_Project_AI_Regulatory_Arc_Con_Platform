@@ -1,7 +1,9 @@
 # DEREK-AI — AI-Powered Regulatory Intelligence System
 
 > Capstone Project · EPAM Generative AI for Software Development Course 2025/2026
+
 > Kazakhstan Construction Norm Compliance Assistant
+
 > Anet Tatygulov
 
 ## Overview
