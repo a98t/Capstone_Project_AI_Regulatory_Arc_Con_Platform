@@ -177,6 +177,8 @@ pytest tests/ -v --timeout=120
 
 The current knowledge base contains **13 official Kazakhstan construction regulations** indexed from `data/regulations/`. All documents are sourced in **Russian language only**.
 
+> **Data availability note:** `data/regulations/` is excluded from version control due to file size. The 13 official Kazakhstan regulatory PDFs used in this project are publicly available from [adilet.zan.kz](https://adilet.zan.kz), [online.zakon.kz](https://online.zakon.kz), and [prg.kz](https://prg.kz/).
+
 > **Language note:** Each regulation is officially published in both Kazakh (Қазақша) and Russian (Русский). For this version of DEREK-AI, only the Russian-language text was used for ingestion and retrieval. Adding the Kazakh-language variant is planned as a future expansion of the platform.
 
 ### СП РК — Свод правил (Building Codes)
