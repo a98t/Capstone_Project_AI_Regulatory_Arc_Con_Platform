@@ -1,17 +1,23 @@
 # DEREK-AI — AI-Powered Regulatory Intelligence System
 
-> Capstone Project · EPAM AI/ML Course 2026  
+> Capstone Project · EPAM Generative AI for Software Development Course 2025/2026
 > Kazakhstan Construction Norm Compliance Assistant
 > Anet Tatygulov
 
 ## Overview
 
-DEREK-AI platform transforms keyword search over 27 000 documents into an AI-first compliance assistant. Given a building description it runs a multi-agent LangGraph pipeline that:
+Every construction project in Kazakhstan requires engineers and architects to manually cross-reference 5–15 regulatory documents — fire safety codes, seismic requirements, accessibility rules, water supply standards, and more. That process takes **2–6 hours per project for experienced professionals and couple of days or weeks for less experienced professionals**, and a missed or outdated norm can mean redesigns, rejected permits, or worse.
 
-1. **Searches** 1,004 indexed chunks from 13 Kazakhstan regulatory PDFs (bge-m3 embeddings, Qdrant; designed to scale to the full ~450,000-document corpus)  
-2. **Analyses** compliance against СНиП / СП / ҚНжЕ / СТ РК norms  
-3. **Verifies** norm freshness via Tavily MCP tool  
-4. **Explains** findings in plain professional Russian/English  
+**DEREK-AI eliminates that.** You describe your building in plain language — in Russian, Kazakh, or English — and the system returns a full structured compliance report in under 30 seconds, with exact article citations and freshness checks on every referenced norm.
+
+Under the hood, a four-agent LangGraph pipeline runs automatically:
+
+1. **Searches** — retrieves the most relevant regulation chunks from 1,004 indexed passages across 13 official Kazakhstan regulatory PDFs, using multilingual bge-m3 embeddings stored in Qdrant
+2. **Analyses** — checks your building's parameters against the retrieved norms using GPT-4o-mini, producing a structured JSON report with compliance status and violation flags per article
+3. **Verifies** — calls the Tavily MCP tool to check live whether each referenced norm is still the current active version, or has been amended
+4. **Explains** — rewrites the technical findings into clear professional Russian with plain-language explanations, so any engineer can act on the results immediately
+
+The result is a compliance report that would have taken a senior engineer half a day — delivered in seconds, with full source traceability.
 
 ---
 

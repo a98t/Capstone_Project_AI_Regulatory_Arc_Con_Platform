@@ -98,12 +98,12 @@ python scripts/check_index.py
 ```powershell
 # From project root, with PYTHONPATH set
 $env:PYTHONPATH = "."
-uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn src.api.main:app --host 0.0.0.0 --port 8001 --reload
 ```
 
 API will be live at:
-- http://localhost:8000/health
-- http://localhost:8000/docs  ← Swagger UI
+- http://localhost:8001/health
+- http://localhost:8001/docs  ← Swagger UI
 
 ---
 
@@ -126,7 +126,7 @@ App is available at: **http://localhost:5173**
 | Service | URL | Command |
 |---|---|---|
 | Qdrant (vector DB) | http://localhost:6333/dashboard | `docker compose up -d` |
-| Backend (FastAPI) | http://localhost:8000/docs | `uvicorn src.api.main:app --reload` |
+| Backend (FastAPI) | http://localhost:8001/docs | `uvicorn src.api.main:app --port 8001 --reload` |
 | Frontend (React) | http://localhost:5173 | `npm run dev` (in `frontend/`) |
 | Ollama (LLM) | http://localhost:11434 | starts automatically with `ollama serve` |
 
@@ -148,7 +148,7 @@ docker compose down
 ## Quick health check
 
 ```powershell
-curl http://localhost:8000/health
+curl http://localhost:8001/health
 ```
 
 Expected response:
@@ -171,7 +171,7 @@ Expected response:
 | Qdrant unhealthy | `docker compose logs qdrant` — check port 6333 is free |
 | Ollama not responding | Run `ollama serve` in a separate terminal |
 | bge-m3 download hangs | Check internet connection; model is ~1 GB |
-| Frontend can't reach API | Confirm backend is on port 8000; Vite proxy is pre-configured |
+| Frontend can't reach API | Confirm backend is on port 8001; Vite proxy is pre-configured |
 | `TAVILY_API_KEY` missing | App still works — norm freshness shows `UNVERIFIED` |
 
 ---
@@ -181,6 +181,6 @@ Expected response:
 ```powershell
 # From project root
 $env:PYTHONPATH = "."
-pytest tests/ -v                        # unit tests (fast)
-pytest tests/ -v -m slow               # includes RAGAS eval (slow, needs Qdrant)
+pytest tests/ -v -k "not slow"          # fast tests (no Qdrant required)
+pytest tests/ -v --timeout=120         # all tests including RAGAS evaluation
 ```
